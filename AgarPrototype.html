@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Processing.js Example Page</title>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="processing.js"></script>
+
+    
+    <script type="text/processing" data-processing-target="targetcanvas">
+	
+	var img;
+	
+	void setup() {
+	size(400, 400);
+	stroke(0);
+	fill(5,5,5);
+	// varibels list:
+	 img = loadImage("ground.png");
+	image(img, 200, 200);
+	};
+	
+	
+	
+	
+	// Draw loop
+	void draw() {
+		
+	
+	textSize(20);
+	text("hello world", 200, 200);
+	
+	
+	};
+	
+    </script>
+  </head>
+
+  <body>
+   
+   <h1>Flappy Bird</h1>
+    
+    <canvas id="targetcanvas" style="image-rendering: -webkit-optimize-contrast !important;"></canvas>
+  </body>
+</html>

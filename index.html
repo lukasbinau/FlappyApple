@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<!-- saved from url=(0024)http://rotendahl.dk/temp -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <title>Processing.JS inside Webpages: Template</title>
+<style type="text/css"></style><style type="text/css">@font-face {
+  font-family: "PjsEmptyFont";
+  src: url('data:application/x-font-ttf;base64,AAEAAAAKAIAAAwAgT1MvMgAAAAAAAAEoAAAAVmNtYXAAAAAAAAABiAAAACxnbHlmAAAAAAAAAbwAAAAkaGVhZAAAAAAAAACsAAAAOGhoZWEAAAAAAAAA5AAAACRobXR4AAAAAAAAAYAAAAAGbG9jYQAAAAAAAAG0AAAABm1heHAAAAAAAAABCAAAACBuYW1lAAAAAAAAAeAAAAAgcG9zdAAAAAAAAAIAAAAAEAABAAAAAQAAAkgTY18PPPUACwAgAAAAALSRooAAAAAAyld0xgAAAAAAAQABAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAEAAAACAAIAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACMAIwAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAMAAQAAAAwABAAgAAAABAAEAAEAAABB//8AAABB////wAABAAAAAAAAAAgAEgAAAAEAAAAAAAAAAAAAAAAxAAABAAAAAAABAAEAAQAAMTcBAQAAAAAAAgAeAAMAAQQJAAEAAAAAAAMAAQQJAAIAAgAAAAAAAQAAAAAAAAAAAAAAAAAA')
+       format('truetype');
+}</style></head>
+ <body>
+    <p align="center">
+	<!--This draws the Canvas on the webpage -->
+      <canvas id="mycanvas" tabindex="0" width="900" height="600" style="image-rendering: -webkit-optimize-contrast !important;"></canvas>
+    </p>
+ 
+
+ <!-- Run all the JavaScript stuff -->
+ <!-- Include the processing.js library -->
+ <!-- See https://khanacademy.zendesk.com/hc/en-us/articles/202260404-What-parts-of-ProcessingJS-does-Khan-Academy-support- for differences -->
+ <script src="./pros/processing.js"></script>
+
+ <script>
+
+    var sketchProc = function(processingInstance) {
+     with (processingInstance) {
+        size(288, 512); 
+        frameRate(60);
+        // ProgramCodeGoesHere
+		//Variabel liste
+		
+		var highscore = "0";
+		
+		var score2 = 0;
+		
+		var crossedPipe = false;
+		
+		var score = 0;
+		
+		//flappybird varibels
+		var flappybirdX = 144;
+		var flappybirdY = 256;
+		var flappybirdSpeed = 3;
+		
+		//ground variebels
+		var groundX = 0;
+		var groundY = 412;
+		
+		//pipe varibels
+		var pipeX = 240;
+		var pipeY = 250;
+		
+		// Hastighed for ground og pipe's 
+		var gpSpeed = 2.5;
+		
+		// gamemodes 
+		var isDead = true;
+		
+		// startbutton varibels
+		var startbuttonX = 30;
+		var startbuttonY = 438;
+		
+		// loader sprites
+		ground = loadImage("ground.png");
+		background = loadImage("background.png")
+		flappybird = loadImage("flappybird.png");
+		pipe = loadImage("pipe.png");
+		pipe2 = loadImage("pipe2.png");
+		startbutton = loadImage("startbutton.png")
+		// mouse click function (hop function)
+			var mousePressed = function() {
+
+		if (mouseX >= startbuttonX && mouseX <= startbuttonX + 104) {
+				if (mouseY >= startbuttonY && mouseY <= startbuttonY + 58) {
+					//text("button is PRESSED!!", 150, 400)
+					(highscore += score)
+					flappybirdY = -200; 
+					pipeX = 400;
+					isDead = false;
+					crossedPipe = false;
+					score -= score;
+				}
+			}
+			
+			
+	  if (mouseButton == LEFT && isDead === false) {
+		// ved hver click rykker flappybird sig 5 op af
+		flappybirdSpeed -= 5.5;
+		
+		//if (flappybirdSpeed > 5) {
+		//	flappybirdSpeed = 0;
+		//}
+	  } };
+		
+		
+		// draw functionen der kører 60 gange i sekundet 
+        var draw = function(){
+		
+			
+			// bagrund
+			image(background, 0, 0);
+			
+			// pipe
+			image(pipe, pipeX, pipeY);
+			
+			// pipe2
+			image(pipe2, pipeX, pipeY -400);
+			
+			// jorden der rykker sig (ground)
+			image(ground, groundX, groundY);
+			
+			// flappybird billed
+			image(flappybird, flappybirdX, flappybirdY);
+			
+			// startbutton
+			image(startbutton, startbuttonX, startbuttonY)
+			
+			// for flappybird til at bevæge sig nedad hver Frame
+			flappybirdY += flappybirdSpeed;
+			
+			// gravity
+			flappybirdSpeed += 0.15;
+			
+			// sørger for at der gravity ikke kommer over 5 i speed
+			if (flappybirdSpeed > 5) {
+				flappybirdSpeed = 5;
+			}
+			
+			// mekanisme der stopper flappybird i toppen
+			if (flappybirdY < 0) {
+				flappybirdY = 0;
+				flappybirdSpeed = 0;
+			}
+			
+			// mekanisme der stopper flappybird i bunden
+			if (flappybirdY > 400) {
+				flappybirdY = 400;
+				flappybirdSpeed = 0;
+			}
+			
+			// Mekanisme der for ground til at bevæge sig
+			
+				if (isDead === false) {
+				groundX -= gpSpeed;
+				}
+				
+				
+			
+			//groundX -= gpSpeed;
+			
+				if (groundX <= -336) {
+					groundX = 0;
+				}
+			
+			
+			// mekanisme der for pipe's til at bevæge sig
+			
+				if(isDead == false){
+				pipeX -= gpSpeed;
+				}
+			
+			//pipeX -= gpSpeed;
+			
+			// resætter pipe's til orginale position 
+			if (pipeX <= -50) {
+				pipeX = 300;
+				crossedPipe = false;
+			}
+			
+			// sætter pipeY til et random tal mellen 175 og 325, så der kommer forskellige højder af ver sæt af pipes
+			if (pipeX <= -45) {
+				pipeY = random(175, 325);
+			}
+			
+			
+			//text("birdY: " + Math.round(flappybirdY) + " pipeTop: " + Math.round((pipeY - 112)) + " pipeBottom: " + Math.round((pipeY +34)) , 50, 100);
+				
+			
+			if (flappybirdX + 34 >= pipeX && flappybirdX <= pipeX + 52) {
+					//text("In Pipe", 50, 230);
+				
+				if (!(flappybirdY + 24 <= pipeY && flappybirdY >= pipeY - 112))  {
+					//text("Dead pipe1", 50, 200);
+					isDead = true;
+					}
+			}
+			
+			
+			textSize(30);
+			text(score, 240, 477);
+			
+			if (flappybirdX >= pipeX && !crossedPipe) {
+				score++;
+				crossedPipe = true;
+			}
+			
+			if (isDead === true) {
+				fill(0, 0, 0)
+				text("YOU DIED!!", 50, 150);
+				textSize(20);
+				text("Press Start to try agian!", 25, 200);
+				text("Your Final Score:", 25, 225);
+				text(score, 25, 250);
+			}
+			
+			
+			textSize(30);
+			text(highscore, 160, 477);
+			
+			textSize(15);
+			text("HighScore:", 140, 450)
+			text("Score:", 220, 450)
+			
+			highscore = score;
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+        }
+
+		
+    }};
+	
+	
+
+    // Get the canvas that Processing-js will use
+    var canvas = document.getElementById("mycanvas");
+    // Pass the function sketchProc (defined in myCode.js) to Processing's constructor.
+    var processingInstance = new Processing(canvas, sketchProc);
+ </script><span style="position: absolute; top: 0px; left: 0px; opacity: 0; font-family: PjsEmptyFont, fantasy;">AAAAAAAA</span>
+
+
+</body></html>
